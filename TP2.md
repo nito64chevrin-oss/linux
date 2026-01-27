@@ -1,6 +1,6 @@
-# TP Réseau - Exploration locale en solo
+# TP Réseau I - Exploration locale en solo
 
-## I. Affichage d'informations sur la pile TCP/IP locale
+## 1. Affichage d'informations sur la pile TCP/IP locale
 
 ### Configuration réseau actuelle
 
@@ -28,7 +28,7 @@ ipconfig /all
 ![Configuration réseau](images/image.png)
 ![Gateway](image.png)
 
-### 🔍 Rôle de la gateway dans le réseau Ingésup
+### Rôle de la gateway dans le réseau Ingésup
 
 La **gateway** (passerelle) joue un rôle crucial :
 - Elle permet aux machines du réseau Ingésup de communiquer avec Internet
@@ -37,7 +37,7 @@ La **gateway** (passerelle) joue un rôle crucial :
 
 ---
 
-## II. Modifications des informations réseau
+## 2. Modifications des informations réseau
 
 ### A. Calcul des adresses disponibles
 
@@ -51,7 +51,7 @@ Nombre d'adresses utilisables : 2^(32-20) - 2 = 4094 adresses
 - **Première adresse utilisable** : `10.33.64.1`
 - **Dernière adresse utilisable** : `10.33.79.254`
 
-> ⚠️ **À exclure :** l'adresse réseau (`10.33.64.0`), l'adresse broadcast (`10.33.79.255`) et la gateway
+>  **À exclure :** l'adresse réseau (`10.33.64.0`), l'adresse broadcast (`10.33.79.255`) et la gateway
 
 ### Configuration manuelle de l'IP sous Windows
 
@@ -83,7 +83,7 @@ nmap -sn 10.33.64.0/20
 ![Scan nmap](image-4.png)
 
 **Résultat :** Liste de toutes les adresses IP utilisées et leurs hôtes associés.
-> 💡 **Note :** "Unknown" signifie que nmap n'a pas pu identifier le nom d'hôte.
+>  **Note :** "Unknown" signifie que nmap n'a pas pu identifier le nom d'hôte.
 
 **Exemples d'adresses IP libres détectées :**
 - `10.33.73.197`
@@ -118,13 +118,13 @@ netsh interface ip set dns "Wi-Fi" static 8.8.8.8
 
 Cette commande permet d'avoir accès à Internet en configurant le serveur DNS de Google (`8.8.8.8`).
 
-> 🌐 **Alternatives DNS :**
+>  **Alternatives DNS :**
 > - Google : `8.8.8.8` / `8.8.4.4`
 > - Cloudflare : `1.1.1.1` / `1.0.0.1`
 
 ---
 
-## 📝 Vérification de la configuration
+##  Vérification de la configuration
 
 ```powershell
 # Afficher la nouvelle configuration
@@ -134,3 +134,112 @@ ipconfig /all
 ping 8.8.8.8          # Test IP
 ping google.com       # Test DNS
 ```
+
+# TP Réseau II - Manipulations d'outils réseau côté client
+
+## 1. DHCP - Dynamic Host Configuration Protocol
+
+### Affichage des informations réseau
+
+Pour obtenir toutes les informations réseau, y compris le serveur DHCP :
+
+```cmd
+ipconfig /all
+```
+
+![Informations réseau complètes](image-6.png)
+
+> **Serveur DHCP identifié** : Cette commande affiche l'adresse IP du serveur DHCP qui a attribué votre configuration réseau actuelle.
+
+---
+
+### Dates d'expiration du bail DHCP
+
+Le bail DHCP possède une durée de vie limitée, visible dans les informations suivantes :
+
+![Dates d'expiration du bail DHCP](image-7.png)
+
+**Informations affichées :**
+- **Bail obtenu** : Date et heure d'attribution de l'adresse IP
+- **Bail expirant le** : Date et heure d'expiration du bail
+
+---
+
+### Fonctionnement du protocole DHCP
+
+Le serveur DHCP fonctionne selon un processus en **4 étapes** appelé **DORA** :
+
+| Étape | Nom | Description |
+|-------|-----|-------------|
+|  **D** | **Discover** | Le client diffuse une demande d'IP sur le réseau |
+|  **O** | **Offer** | Le serveur DHCP propose une adresse IP disponible |
+|  **R** | **Request** | Le client accepte l'offre et demande cette IP |
+|  **A** | **Acknowledge** | Le serveur confirme l'attribution de l'IP |
+
+>  **Bon à savoir** : Le bail DHCP est temporaire, généralement valable entre **24 heures et 7 jours**.
+
+---
+
+###  Renouvellement de l'adresse IP
+
+Pour demander une nouvelle adresse IP en ligne de commande :
+
+```cmd
+ipconfig /release
+ipconfig /renew
+```
+
+![Renouvellement de l'adresse IP](image-8.png)
+
+>  **Attention** : Il faut impérativement être connecté en **WiFi**. Si vous êtes sur **câble Ethernet**, cette manipulation ne fonctionnera pas correctement dans certains environnements réseau.
+
+---
+
+## 2. DNS - Domain Name System
+
+###  Identification du serveur DNS
+
+Pour afficher l'adresse du serveur DNS configuré :
+
+```cmd
+ipconfig /all
+```
+
+![Serveur DNS configuré](image-9.png)
+
+> Le serveur DNS est responsable de la résolution des noms de domaine en adresses IP.
+
+---
+
+###  Requêtes DNS - Lookup standard
+
+#### Résolution de noms de domaine
+
+```cmd
+nslookup google.com
+nslookup ynov.com
+```
+
+**Résultat obtenu :**
+- L'adresse IP des serveurs web est affichée
+- Peut retourner une seule adresse ou plusieurs (CDN - Content Delivery Network)
+
+** Interprétation :**
+- **Google.com** : Utilise généralement plusieurs adresses IP pour la répartition de charge
+- **Ynov.com** : Affiche l'adresse du serveur web, potentiellement via un CDN
+
+---
+
+###  Requêtes DNS - Reverse Lookup
+
+#### Résolution inverse (IP vers nom de domaine)
+
+```cmd
+nslookup 78.78.21.21
+nslookup 92.16.54.88
+```
+
+**Résultat possible :**
+-  Si un **enregistrement PTR** existe → Le nom de domaine associé est affiché
+-  Sinon → Erreur ou message **"Non-existent domain"**
+
