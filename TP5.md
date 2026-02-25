@@ -327,6 +327,12 @@ Ici on a obtenue 192.168.170.100
 
 ### 14.1 Mise en place DMZ
 
+![alt text](image-73.png)
+
+![alt text](image-74.png)
+
+
+
 ### 14.2 Questions
 
 #### Qu'est ce qu'une DMZ ?
@@ -347,36 +353,46 @@ Ici on a obtenue 192.168.170.100
 
 ### 15.1 Filtrage MAC
 
+![alt text](image-76.png)
+
 ### 15.2 Questions
 
 #### Le filtrage MAC est-il réellement sécurisé ?
 
-- 
+- Non, il s'agit de ce qu'on appelle une "sécurité par l'obscurité", une fausse impression de sécurité
 
 #### Pourquoi est-il facilement contournable ?
 
-- 
+- Car les adresses MAC sont très facilement visibles et montrent les adresses autorisées et une adresse MAC est modifiable
 
 ## 16. Portail captif
 
 ### 16.1 Implémenter portail captif
 
+![alt text](image-77.png)
+
 ### 16.2 Questions
 
 #### Dans quels contextes utilise-t-on cela ?
 
-- 
+- On le retrouve principalement dans les environnements où l'accès réseau est offert à des utilisateurs non connus à l'avance, comme les hôtels, cafés, aéroports et restaurants
 
 #### Quelle(s) avantage(s) avec une simple règle de pare-feu ?
 
-- 
+- Une règle de pare-feu bloque ou autorise du trafic de manière statique, sans interaction avec l'utilisateur. Le portail captif permet l'authentification par utilisateur, acceptation des conditions d'utilisation (CGU) et contrôle par session
 
 ## 17. Sauvegarde / restauration
 
 ### 17.1 
 
+![alt text](image-78.png)
+
+![alt text](image-79.png)
+
+![alt text](image-80.png)
+
 ### 17.2 Question
 
 #### Pourquoi la sauvegarde régulière est-elle essentielle en production ?
 
-- 
+- Il permet d'éviter de perdre la progression suite à des erreurs humaines ou matérielles, de garder la progression suite au changement de matériel et la traçabilité en cas d'erreur inconnue
