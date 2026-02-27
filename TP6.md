@@ -46,8 +46,6 @@
 
 ## 1.3 Questions
 
-
-
 ### Où Easy-RSA crée-t-il ses fichiers ?
 
 -  ~/easy-rsa/pki/
